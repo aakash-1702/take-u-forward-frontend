@@ -45,12 +45,14 @@ const Footer = () => {
           </p>
 
           <div className="mt-8">
-            <Button
+            <Link href="/signup">
+               <Button
               size="lg"
-              className="h-12 bg-amber-600 px-8 text-base font-semibold text-white hover:bg-amber-700 active:scale-95"
+              className=" cursor-pointer h-12 bg-amber-600 px-8 text-base font-semibold text-white hover:bg-amber-700 active:scale-95"
             >
               Start Practicing Now
             </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -30,16 +30,18 @@ const Navbar = () => {
       `}
     >
       {/* Left: Brand */}
-      <div
-        className="
+      <Link href={"/"}>
+        <div
+          className="
           text-lg sm:text-xl font-semibold 
           tracking-tight text-neutral-100 
           cursor-pointer flex items-center gap-1.5
         "
-      >
-        TakeUForward
-        <span className="text-amber-400 font-bold">.</span>
-      </div>
+        >
+          TakeUForward
+          <span className="text-amber-400 font-bold">.</span>
+        </div>
+      </Link>
 
       {/* Center: Primary Nav – hidden on mobile, shown on md+ */}
       <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium">
@@ -78,7 +80,7 @@ const Navbar = () => {
               P
             </Button>
           ) : (
-            <Link href="/signup">              
+            <Link href="/signup">
               <Button
                 size="sm"
                 variant="primary"

@@ -3,15 +3,14 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code2 } from "lucide-react";
+import Link from "next/link";
 
 import Image from "next/image";
-import dashboard from '@/public/hero/dashboard.jpg';
-import problems from '@/public/hero/problems.png';
-import sheets from '@/public/hero/sheets.png';
+import dashboard from "@/public/hero/dashboard.jpg";
+import problems from "@/public/hero/problems.png";
+import sheets from "@/public/hero/sheets.png";
 
-const heroImages = [
-  dashboard,problems,sheets
-];
+const heroImages = [dashboard, problems, sheets];
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -53,13 +52,15 @@ const Hero = () => {
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center gap-4">
-              <Button
-                size="lg"
-                className="h-12 bg-amber-600 px-8 text-base font-semibold text-white shadow-md hover:bg-amber-700 active:scale-95"
-              >
-                Start Coding
-                <Code2 className="ml-2 h-4 w-4" />
-              </Button>
+              <Link href="/signup">
+                <Button
+                  size="lg"
+                  className=" cursor-pointer h-12 bg-amber-600 px-8 text-base font-semibold text-white shadow-md hover:bg-amber-700 active:scale-95"
+                >
+                  Start Coding
+                  <Code2 className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
 
               <Button
                 variant="outline"

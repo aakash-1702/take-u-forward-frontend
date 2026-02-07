@@ -80,6 +80,16 @@ const Navbar = () => {
               P
             </Button>
           ) : (
+            <div className="flex gap-2">
+            <Link href="/login">
+              <Button
+                size="sm"
+                variant="primary"
+                className="hover:bg-amber-700 hover:text-neutral-50 text-neutral-700  cursor-pointer bg-amber-600"
+              >
+                Login
+              </Button>
+            </Link>
             <Link href="/signup">
               <Button
                 size="sm"
@@ -89,6 +99,7 @@ const Navbar = () => {
                 SignUp
               </Button>
             </Link>
+            </div>
           ))}
 
         {/* Mobile menu button (hamburger) – appears on < md */}

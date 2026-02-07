@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export default function SignInPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -31,6 +32,11 @@ export default function SignInPage() {
       return;
     }
 
+    if (!emailRegex.test(email)) {
+      alert("Invalid Email Format provided");
+      return;
+    }
+
     try {
       const logInResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/login`,
@@ -45,14 +51,20 @@ export default function SignInPage() {
       );
 
       if (!logInResponse.ok) {
-        alert(response.msg || "Unable to login-from response");
+        const errorRes = await logInResponse.json();
+        alert(errorRes?.message || "Unable to login");
         return;
       }
       const response = await logInResponse.json();
+      const userRole = response.data;
 
-      alert("LoggedIn Successfully, click ok for redirecting to home page");
+      alert("LoggedIn Successfully, click ok for redirecting to dashboard");
       setTimeout(() => {
-        router.push("/");
+        if (userRole === "USER") {
+          router.push("/dashboard");
+        } else if (userRole === "ADMIN") {
+          router.push("/admin/dashboard");
+        }
       }, 1200);
       return;
     } catch (error) {

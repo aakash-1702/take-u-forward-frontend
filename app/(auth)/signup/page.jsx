@@ -70,16 +70,14 @@ export default function SignupPage() {
         },
       );
 
-
       if (!signUpResponse.ok) {
-        alert(response.message || "SignUp Failed due technical error");
+        const errResponse = await signUpResponse.json();
+        alert(errResponse.data || "SignUp Failed due technical error");
         return;
       }
 
       const response = await signUpResponse.json();
       console.log("SingUp Data", response);
-
-      
 
       alert("SignUp Successfull , Click ok for redirecting to login page");
       setTimeout(() => {

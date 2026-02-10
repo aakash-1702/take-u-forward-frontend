@@ -23,10 +23,10 @@ export default function RootLayout({ children }) {
       <html lang="en" suppressHydrationWarning>
         <head />
         <body
-          className="pt-4 min-h-screen
+          className="min-h-screen
         bg-linear-to-br
         from-neutral-100 via-neutral-50 to-neutral-100
-        dark:from-slate-950 dark:via-slate-900 dark:to-slate-950
+        dark:from-neutral-950 dark:via-neutral-800 dark:to-neutral-950
         text-neutral-800 dark:text-neutral-300
         transition-colors duration-300
       "

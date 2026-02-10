@@ -24,7 +24,7 @@ const Hero = () => {
   return (
     <section className="relative overflow-hidden pt-28 pb-24">
       {/* Subtle ambient glow */}
-      <div className="absolute left-1/2 top-0 -z-10 h-[280px] w-[520px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-[120px] dark:bg-amber-500/10" />
+      <div className="absolute left-1/2 top-0 -z-10 h-70 w-130 -translate-x-1/2 rounded-full bg-amber-500/20 blur-[120px] dark:bg-amber-500/10" />
 
       {/* 🔑 Shared container — EXACT navbar width */}
       <div className="mx-auto w-[95%] max-w-5xl">
@@ -81,11 +81,11 @@ const Hero = () => {
           {/* RIGHT: Visual placeholder */}
 
           <div className="hidden lg:flex items-center justify-center">
-            <Carousel className="w-full max-w-[420px]">
+            <Carousel className="w-full max-w-105">
               <CarouselContent>
                 {heroImages.map((src, index) => (
                   <CarouselItem key={index} className="basis-full">
-                    <div className="relative h-[280px] w-full overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900">
+                    <div className="relative h-70 w-full overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900">
                       <Image
                         src={src}
                         alt="Platform preview"

@@ -64,7 +64,7 @@ export default function SignInPage() {
           router.push("/dashboard");
         } else if (userRole === "ADMIN") {
           router.push("/admin/dashboard");
-        }
+        }n
       }, 1200);
       return;
     } catch (error) {

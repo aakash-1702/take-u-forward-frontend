@@ -46,39 +46,37 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+@layer base {
+  :root {
+    /* Main Backgrounds */
+    --background: 222.2 84% 4.9%; /* This is your #020617 (Slate-950) */
+    --foreground: 210 40% 98%; /* Your --bc-text-main */
+
+    /* Panels / Cards */
+    --card: 217.2 91% 6%; /* This is your #0b1120 */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217.2 91% 6%;
+    --popover-foreground: 210 40% 98%;
+
+    /* The "Primary" color (Your Amber) */
+    --primary: 37.7 92.1% 50.2%; /* This is your #f59e0b (Amber-500) */
+    --primary-foreground: 222.2 47.4% 11.2%; /* Dark text for light button */
+
+    /* Secondary / Muted */
+    --muted: 217.2 32.6% 17.5%; /* This is your #111827 (Hover panel) */
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    /* THE RADIUS FIX - This solves your rounding issue */
+    --radius: 0.5rem; /* Standard for rounded-md */
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 37.7 92.1% 50.2%; /* Amber ring for focus states */
+  }
 }
 
 .dark {
@@ -122,4 +120,23 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.input {
+  background: #0a0a0a;
+  border: 1px solid #262626;
+  color: #f5f5f5;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.input::placeholder {
+  color: #737373;
+}
+
+.input:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
 }

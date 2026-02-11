@@ -2,14 +2,18 @@
 import OverviewCard from "@/components/OverviewCard";
 import React from "react";
 import { get } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminNavbar from "@/components/AdminNavbar";
+
 const page = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchUserRole = async () => {
+      setIsLoading(true);
       const userRole = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/getUserRole`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/me`,
         {
           method: "GET",
           credentials: "include",
@@ -29,12 +33,22 @@ const page = () => {
         router.replace("/signin");
         return;
       }
+      setIsLoading(false);
     };
     fetchUserRole();
   }, [router]);
   return (
-    <div className="h-screen ">
-      <OverviewCard />
+    <div>
+      {isLoading ? (
+        <div className="h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      ) : (
+        <div>
+          <AdminNavbar />
+          <OverviewCard />
+        </div>
+      )}
     </div>
   );
 };

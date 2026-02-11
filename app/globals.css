@@ -140,3 +140,16 @@
   border-color: #ffffff;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
 }
+
+
+
+.tick-path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  transition: stroke-dashoffset 0.18s ease-out;
+}
+
+.peer:checked + div .tick-path {
+  stroke-dashoffset: 0;
+}
+

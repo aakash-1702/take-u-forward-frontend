@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit3 } from "lucide-react";
+import AdminNavbar from "@/components/AdminNavbar";
+import Link from "next/link";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ export default function Page() {
 
     // Very important: clean up when component disappears
     return () => {
-      document.body.style.overflow = "";  
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -134,187 +136,259 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 pt-24 px-10">
-      <div className="flex items-center justify-between">
-        {/* Search */}
-        <div className="flex items-center gap-3">
-          <input
-            placeholder="e.g. Two Sum"
-            className="bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-sm outline-none focus:border-neutral-600 placeholder:text-neutral-500"
-          />
-          <Button
-            size="sm"
-            variant="secondary"
-            className="hover:bg-neutral-400 cursor-pointer hover:text-neutral-900 bg-neutral-300 text-neutral-950"
-          >
-            Search
-          </Button>
-        </div>
+    <div>
+      <AdminNavbar />
+      <div className="min-h-screen bg-neutral-950 text-neutral-100 pt-24 px-10">
+        <div className="flex items-center justify-between">
+          {/* Search */}
+          <div className="flex items-center gap-3">
+            <input
+              placeholder="e.g. Two Sum"
+              className="bg-neutral-900 border border-neutral-800 rounded-md px-3 py-2 text-sm outline-none focus:border-neutral-600 placeholder:text-neutral-500"
+            />
+            <Button
+              size="sm"
+              variant="secondary"
+              className="hover:bg-neutral-400 cursor-pointer hover:text-neutral-900 bg-neutral-300 text-neutral-950"
+            >
+              Search
+            </Button>
+          </div>
 
-        {/* Actions */}
-        <div className="flex gap-3">
-          <Button
-            className="bg-neutral-100 text-black hover:bg-neutral-200 cursor-pointer"
-            onClick={() => setIsOpen(true)}
-          >
-            <Plus className="w-4 h-4 mr-2" /> Add Problems
-          </Button>
+          <div>{/* Filters would be present here*/}</div>
 
-          {/* Uncomment when you implement edit */}
-          {/* <Button variant="outline" className="border-neutral-700 hover:bg-neutral-900">
+          {/* Actions */}
+          <div className="flex gap-3">
+            <Button
+              className="bg-neutral-100 text-black hover:bg-neutral-200 cursor-pointer"
+              onClick={() => setIsOpen(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" /> Add Problems
+            </Button>
+
+            {/* Uncomment when you implement edit */}
+            {/* <Button variant="outline" className="border-neutral-700 hover:bg-neutral-900">
             <Edit3 className="w-4 h-4 mr-2" /> Edit Problem
           </Button> */}
+          </div>
         </div>
-      </div>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
-          />
+        <div className="pt-20">
+          {/* Table for displaying problems will be here */}
+          <div className="rounded-xl border border-neutral-800 overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-neutral-900 text-neutral-400">
+                <tr className="text-left">
+                  <th className="p-4 w-16">Solved</th>
+                  <th className="p-4">Problem</th>
+                  <th className="p-4 w-32">Difficulty</th>
+                  <th className="p-4 w-64">Tags</th>
+                </tr>
+              </thead>
 
-          <div
-            className="relative z-10 w-full max-w-lg mx-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="rounded-2xl bg-neutral-950 ... animate-pop max-h-[90vh] overflow-y-auto">
-              {/* Header */}
-              <div className="px-7 pt-6 pb-4 border-b border-neutral-800">
-                <h2 className="text-xl font-semibold">Create Problem</h2>
-              </div>
+              <tr className="hover:bg-slate-900 transition-colors">
+                <td className="p-4 w-16">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input type="checkbox" className="peer hidden" />
 
-              {/* Body */}
-              <div className="px-7 py-6 space-y-6">
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-neutral-400">Title</label>
-                  <input
-                    className="input"
-                    placeholder="Two Sum"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                  />
-                </div>
+                    <div
+                      className="
+    w-5 h-5 rounded-md border border-neutral-600
+    flex items-center justify-center
+    transition-all duration-150
+    bg-neutral-900
 
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-neutral-400">Link</label>
-                  <input
-                    className="input"
-                    name="link"
-                    value={formData.link}
-                    onChange={handleChange}
-                    placeholder="https://leetcode.com/problems/two-sum"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-neutral-400">Difficulty</label>
-                  <select
-                    className="input"
-                    name="difficulty"
-                    value={formData.difficulty}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>
-                      Select difficulty
-                    </option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-neutral-400">
-                    Description
+    peer-checked:bg-emerald-500/10
+    peer-checked:border-emerald-400
+  "
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="
+    w-3.5 h-3.5
+    text-emerald-400
+    stroke-3 stroke-current fill-none
+    opacity-0 scale-75
+    transition-all duration-150
+    peer-checked:opacity-100 peer-checked:scale-100
+  "
+                      >
+                        <path d="M5 13l4 4L19 7" className="tick-path" />
+                      </svg>
+                    </div>
                   </label>
-                  <textarea
-                    className="input h-28 resize-none"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    placeholder="Short explanation..."
-                  />
+                </td>
+
+                <td className="p-4 font-medium">
+                  <a href="/" className="hover:text-yellow-400">
+                    Two Sum
+                  </a>
+                </td>
+
+                <td className="p-4">
+                  <span className="text-green-400">Easy</span>
+                </td>
+
+                <td className="p-4 text-neutral-400">Array, Hashing</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        {/* this is for opening the card responsible for providing new problem*/}
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setIsOpen(false)}
+            />
+
+            <div
+              className="relative z-10 w-full max-w-lg mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="rounded-2xl bg-neutral-950 ... animate-pop max-h-[90vh] overflow-y-auto">
+                {/* Header */}
+                <div className="px-7 pt-6 pb-4 border-b border-neutral-800">
+                  <h2 className="text-xl font-semibold">Create Problem</h2>
                 </div>
 
-                {/* Companies */}
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-neutral-400">Companies</label>
-                  <input
-                    className="input"
-                    placeholder="Type company name and press Enter (e.g. Google)"
-                    value={companyInput}
-                    onChange={(e) => setCompanyInput(e.target.value)}
-                    onKeyDown={handleCompanyKeyDown}
-                  />
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.companies.map((company) => (
-                      <span
-                        key={company}
-                        className="px-3 py-1 text-sm rounded-full bg-neutral-800 flex items-center gap-2"
-                      >
-                        {company}
-                        <button
-                          onClick={() => removeCompany(company)}
-                          className="text-neutral-400 hover:text-red-400"
+                {/* Body */}
+                <div className="px-7 py-6 space-y-6">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-neutral-400">Title</label>
+                    <input
+                      className="input"
+                      placeholder="Two Sum"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-neutral-400">Link</label>
+                    <input
+                      className="input"
+                      name="link"
+                      value={formData.link}
+                      onChange={handleChange}
+                      placeholder="https://leetcode.com/problems/two-sum"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-neutral-400">
+                      Difficulty
+                    </label>
+                    <select
+                      className="input"
+                      name="difficulty"
+                      value={formData.difficulty}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled>
+                        Select difficulty
+                      </option>
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-neutral-400">
+                      Description
+                    </label>
+                    <textarea
+                      className="input h-28 resize-none"
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      placeholder="Short explanation..."
+                    />
+                  </div>
+
+                  {/* Companies */}
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-neutral-400">
+                      Companies
+                    </label>
+                    <input
+                      className="input"
+                      placeholder="Type company name and press Enter (e.g. Google)"
+                      value={companyInput}
+                      onChange={(e) => setCompanyInput(e.target.value)}
+                      onKeyDown={handleCompanyKeyDown}
+                    />
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {formData.companies.map((company) => (
+                        <span
+                          key={company}
+                          className="px-3 py-1 text-sm rounded-full bg-neutral-800 flex items-center gap-2"
                         >
-                          ✕
-                        </button>
-                      </span>
-                    ))}
+                          {company}
+                          <button
+                            onClick={() => removeCompany(company)}
+                            className="text-neutral-400 hover:text-red-400"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm text-neutral-400">Tags</label>
+                    <input
+                      className="input"
+                      placeholder="Type tag and press Enter (e.g. array)"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={handleTagKeyDown}
+                    />
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {formData.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-3 py-1 text-sm rounded-full bg-neutral-800 flex items-center gap-2"
+                        >
+                          {tag}
+                          <button
+                            onClick={() => removeTag(tag)}
+                            className="text-neutral-400 hover:text-red-400"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Tags */}
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-neutral-400">Tags</label>
-                  <input
-                    className="input"
-                    placeholder="Type tag and press Enter (e.g. array)"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={handleTagKeyDown}
-                  />
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 text-sm rounded-full bg-neutral-800 flex items-center gap-2"
-                      >
-                        {tag}
-                        <button
-                          onClick={() => removeTag(tag)}
-                          className="text-neutral-400 hover:text-red-400"
-                        >
-                          ✕
-                        </button>
-                      </span>
-                    ))}
-                  </div>
+                {/* Footer */}
+                <div className="flex justify-end gap-3 px-7 py-4 border-t border-neutral-800 bg-neutral-950/60">
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="px-4 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-sm"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className="px-4 py-2 rounded-lg bg-white text-black hover:bg-neutral-200 text-sm font-medium"
+                    onClick={handleSubmit}
+                  >
+                    Create Problem
+                  </button>
                 </div>
-              </div>
-
-              {/* Footer */}
-              <div className="flex justify-end gap-3 px-7 py-4 border-t border-neutral-800 bg-neutral-950/60">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-sm"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  className="px-4 py-2 rounded-lg bg-white text-black hover:bg-neutral-200 text-sm font-medium"
-                  onClick={handleSubmit}
-                >
-                  Create Problem
-                </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

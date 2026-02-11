@@ -4,10 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const handleLogout = () => {
-  console.log("Logout triggered");
-};
+import { useRouter } from "next/navigation";
 
 const NavItem = ({ href, label }) => {
   const pathname = usePathname();
@@ -30,7 +27,7 @@ const NavItem = ({ href, label }) => {
       <span
         className={`
           absolute inset-0 rounded-full pointer-events-none
-          bg-gradient-to-br from-white/15 via-transparent to-white/5
+          bg-linear-to-br from-white/15 via-transparent to-white/5
           opacity-0 group-hover:opacity-80 ${isActive ? "opacity-100" : ""}
           transition-opacity duration-300
         `}
@@ -41,9 +38,9 @@ const NavItem = ({ href, label }) => {
         className={`
           absolute inset-0 rounded-full pointer-events-none overflow-hidden
           before:content-[''] before:absolute before:inset-0
-          before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent
+          before:bg-linear-to-r before:from-transparent before:via-white/20 before:to-transparent
           before:-translate-x-full group-hover:before:translate-x-full
-          before:transition-transform before:duration-[700ms] before:ease-out
+          before:transition-transform before:duration-700 before:ease-out
         `}
       />
 
@@ -53,12 +50,35 @@ const NavItem = ({ href, label }) => {
 };
 
 const AdminNavbar = () => {
+  const router = useRouter();
+  const handleLogout = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      if (!res.ok) {
+        console.error("Logout failed");
+        return;
+      }
+
+      router.replace("/signin");
+      router.refresh();
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
+
   return (
     <nav
       className="
         fixed top-0 left-0 right-0 z-50
         h-16 md:h-18
-        bg-gradient-to-r from-black via-neutral-900 to-black
+        bg-linear-to-r from-black via-neutral-900 to-black
         backdrop-blur-xl border-b border-white/10
         shadow-[0_4px_30px_rgba(0,0,0,0.6)]
         flex items-center justify-between
@@ -108,20 +128,32 @@ const AdminNavbar = () => {
             />
             <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-white rounded-full border-2 border-black shadow-[0_0_8px_rgba(255,255,255,0.7)]" />
           </div>
-          <span className="text-sm font-semibold text-neutral-200 hidden lg:block">Admin</span>
+          <span className="text-sm font-semibold text-neutral-200 hidden lg:block">
+            Admin
+          </span>
         </Link>
 
         <button
           onClick={handleLogout}
-          className="group relative px-5 py-2 rounded-full text-sm font-semibold
+          className=" cursor-pointer group relative px-5 py-2 rounded-full text-sm font-semibold
           bg-white/10 text-white border border-white/20
           hover:bg-white/20 hover:border-white/40
           hover:shadow-[0_0_18px_rgba(255,255,255,0.35),inset_0_0_10px_rgba(255,255,255,0.15)]
           transition-all duration-300 active:scale-95 hover:-translate-y-0.5 flex items-center gap-2"
         >
-          <span>Logout</span>
-          <svg className="w-4 h-4 opacity-80 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" />
+          <span className="cursor-pointer">Logout</span>
+          <svg
+            className="w-4 h-4 opacity-80 group-hover:opacity-100 transition-opacity"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 16l4-4m0 0l-4-4m4 4H7"
+            />
           </svg>
         </button>
       </div>

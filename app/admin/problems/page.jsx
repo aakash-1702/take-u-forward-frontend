@@ -5,6 +5,16 @@ import { useState, useEffect } from "react";
 import { Plus, Edit3 } from "lucide-react";
 import AdminNavbar from "@/components/AdminNavbar";
 import Link from "next/link";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { tr } from "date-fns/locale";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +29,46 @@ export default function Page() {
 
   const [companyInput, setCompanyInput] = useState("");
   const [tagInput, setTagInput] = useState("");
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(0);
+  const [problems, setProblems] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        setLoading(true);
+        const newProblems = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get-all-problems/${page}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+
+        if (!newProblems.ok) {
+          const error = await newProblems.json();
+          console.log("Error fetching problems : ", error);
+          alert("Error fethching new problems");
+          return;
+        }
+
+        const problemsFetched = await newProblems.json();
+        setProblems(problemsFetched.data.problems);
+        setMaxPage(problemsFetched.data.pagination.totalPages);
+        setLoading(false);
+        return;
+      } catch (error) {
+        console.log("Error fetching problems : ", error);
+        alert("Error fethching new problems");
+        setLoading(false);
+        return;
+      }
+    };
+
+    fetchProblems();
+  }, [page]);
 
   useEffect(() => {
     if (isOpen) {
@@ -135,6 +185,37 @@ export default function Page() {
     }
   };
 
+  const TableSkeleton = () => {
+    return (
+      <>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <tr key={i} className="animate-pulse">
+            <td className="p-4 w-16">
+              <div className="w-5 h-5 rounded-md bg-neutral-800"></div>
+            </td>
+
+            <td className="p-4">
+              <div className="h-4 w-52 bg-neutral-800 rounded mb-2"></div>
+              <div className="h-3 w-32 bg-neutral-900 rounded"></div>
+            </td>
+
+            <td className="p-4 w-32">
+              <div className="h-4 w-16 bg-neutral-800 rounded"></div>
+            </td>
+
+            <td className="p-4 w-64">
+              <div className="flex gap-2">
+                <div className="h-5 w-14 bg-neutral-800 rounded-full"></div>
+                <div className="h-5 w-12 bg-neutral-800 rounded-full"></div>
+                <div className="h-5 w-16 bg-neutral-800 rounded-full"></div>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </>
+    );
+  };
+
   return (
     <div>
       <AdminNavbar />
@@ -186,52 +267,104 @@ export default function Page() {
                 </tr>
               </thead>
 
-              <tr className="hover:bg-slate-900 transition-colors">
-                <td className="p-4 w-16">
-                  <label className="flex items-center gap-3 cursor-pointer group">
-                    <input type="checkbox" className="peer hidden" />
-
-                    <div
-                      className="
-    w-5 h-5 rounded-md border border-neutral-600
-    flex items-center justify-center
-    transition-all duration-150
-    bg-neutral-900
-
-    peer-checked:bg-emerald-500/10
-    peer-checked:border-emerald-400
-  "
+              <tbody
+                className={
+                  loading
+                    ? "opacity-70"
+                    : "opacity-100 transition-opacity duration-300"
+                }
+              >
+                {loading ? (
+                  <TableSkeleton />
+                ) : (
+                  problems.map((prob) => (
+                    <tr
+                      key={prob.id}
+                      className="hover:bg-slate-900 transition-colors"
                     >
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="
-    w-3.5 h-3.5
-    text-emerald-400
-    stroke-3 stroke-current fill-none
-    opacity-0 scale-75
-    transition-all duration-150
-    peer-checked:opacity-100 peer-checked:scale-100
-  "
-                      >
-                        <path d="M5 13l4 4L19 7" className="tick-path" />
-                      </svg>
-                    </div>
-                  </label>
-                </td>
+                      <td className="p-4 w-16">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                          <input type="checkbox" className="peer hidden" />
 
-                <td className="p-4 font-medium">
-                  <a href="/" className="hover:text-yellow-400">
-                    Two Sum
-                  </a>
-                </td>
+                          <div
+                            className="
+              w-5 h-5 rounded-md border border-neutral-600
+              flex items-center justify-center
+              transition-all duration-150
+              bg-neutral-900
+              peer-checked:bg-emerald-500/10
+              peer-checked:border-emerald-400
+            "
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="
+                  w-3.5 h-3.5 text-emerald-400
+                  stroke-3 stroke-current fill-none
+                  opacity-0 scale-75
+                  transition-all duration-150
+                  peer-checked:opacity-100 peer-checked:scale-100
+                "
+                            >
+                              <path d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        </label>
+                      </td>
 
-                <td className="p-4">
-                  <span className="text-green-400">Easy</span>
-                </td>
+                      <td className="p-4 font-medium">
+                        <Link href={prob.link}>
+                          <p className="hover:text-amber-600">{prob.title}</p>
+                        </Link>
+                      </td>
 
-                <td className="p-4 text-neutral-400">Array, Hashing</td>
-              </tr>
+                      <td className="p-4">
+                        <span className="text-green-400">
+                          {prob.difficulty}
+                        </span>
+                      </td>
+
+                      <td className="p-4 text-neutral-400">
+                        <div className="flex gap-2 items-center">
+                          {prob.tags.map((tag) => (
+                            <p key={tag}>{tag}</p>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
             </table>
+          </div>
+          {/* Pagination would be used here */}
+          <div className="pt-10">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    className="cursor-pointer"
+                    disabled={page <= 1}
+                    onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                  />
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationLink isActive>{page}</PaginationLink>
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext
+                    className="cursor-pointer"
+                    disabled={page >= maxPage}
+                    onClick={() => setPage((prev) => prev + 1)}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
 

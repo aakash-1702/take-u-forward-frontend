@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardAction,
@@ -29,6 +30,7 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 
 export default function Page() {
+  const router = useRouter();
   const [sheets, setSheets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -101,6 +103,16 @@ export default function Page() {
   const filteredSheets = sheets.filter((sheet) =>
     sheet.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+
+  const openSection = (slug) => {
+    if (!slug) {
+      alert("This sheet has no slug. Re-fetching sheets...");
+      window.location.reload();
+      return;
+    }
+
+    router.push(`/admin/sheets/${slug}`);
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -232,6 +244,9 @@ export default function Page() {
 
                   <CardFooter>
                     <Button
+                      onClick={(e) => {
+                        openSection(sheet.slug);
+                      }}
                       variant="outline"
                       className=" cursor-pointer w-full border-neutral-700 hover:bg-neutral-800 text-xs"
                     >

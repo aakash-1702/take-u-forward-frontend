@@ -12,8 +12,7 @@ export async function middleware(req) {
     console.log("❌ No token found, redirecting...");
     return NextResponse.redirect(
       new URL("/signin?error=LOGIN_REQUIRED", req.url),
-    );
-  }
+    );  }
 
   console.log("✅ Token found:", token);
 
